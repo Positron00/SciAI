@@ -1,0 +1,9 @@
+project:
+  output-dir: _docs
+
+website:
+  title: "SciAI"
+  site-url: "https://Positron00.github.io/SciAI"
+  description: "This repo contains an LLM-based agentic system to continuously scan scientific publications and interact with users via a chat interface. The goal is to save researcher's time by automatically updating scientific knowledge and providing accurate summaries with linked citations. It may branch into experimental design and analysis."
+  repo-branch: main
+  repo-url: "https://github.com/Positron00/SciAI"
