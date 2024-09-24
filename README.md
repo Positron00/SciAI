@@ -61,7 +61,16 @@ package manager specific guidelines on
 Fill me in please! Don’t forget code examples:
 
 ``` python
-1+1
+import SciAI.core as core
+core
 ```
 
-    2
+    Using cache from '/Volumes/SSD2TB/Google Drive/Work/MachineLearning/SciAI/nbs/gradio_cached_examples/15' directory. If method or examples have changed since last caching, delete this folder to clear cache.
+
+    Running on local URL:  http://127.0.0.1:7914
+
+    Could not create share link. Please check your internet connection or our status page: https://status.gradio.app.
+
+<div><iframe src="http://127.0.0.1:7914/" width="100%" height="500" allow="autoplay; camera; microphone; clipboard-read; clipboard-write;" frameborder="0" allowfullscreen></iframe></div>
+
+    <module 'SciAI.core' from '/Volumes/SSD2TB/Google Drive/Work/MachineLearning/SciAI/SciAI/core.py'>
