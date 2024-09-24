@@ -4,6 +4,6 @@ project:
 website:
   title: "SciAI"
   site-url: "https://Positron00.github.io/SciAI"
-  description: "This repo contains an LLM-based agentic system to interact with users via a chatbot interface and carry out tasks based on users' requests or questions."
+  description: "This repo contains an LLM-based agentic system to interact with users via a chatbot interface and carry out tasks based on user requests or questions."
   repo-branch: main
   repo-url: "https://github.com/Positron00/SciAI"
