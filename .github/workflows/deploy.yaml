@@ -13,5 +13,4 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
       - uses: fastai/workflows/quarto-ghp@master
