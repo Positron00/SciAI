@@ -10,5 +10,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - using: 'node20'
+      - run: 'node20'
       - uses: fastai/workflows/nbdev-ci@master
