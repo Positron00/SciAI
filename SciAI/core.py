@@ -57,6 +57,7 @@ with gr.Blocks() as sciChat:
     chatbot.like(vote, None, None)
     gr.ChatInterface(
         fn=taskRouter,
+        type="messages",
         chatbot=chatbot,
         textbox=gr.Textbox(placeholder="How can I help?", container=False, scale=7),
         title="SciAI Assistant",
