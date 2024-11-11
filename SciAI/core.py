@@ -59,12 +59,13 @@ with gr.Blocks() as sciChat:
         fn=taskRouter,
         type="messages",
         chatbot=chatbot,
-        textbox=gr.Textbox(placeholder="How can I help?", container=False, scale=7),
+        textbox=gr.MultimodalTextbox(placeholder="How can I help?", container=False, scale=7),
         title="SciAI Assistant",
         description="Ask me any question or carry out a task",
         theme="soft",
-        examples=["Hello", "What's new last week in neuroscience?", "I need help analyze some data"],
-        cache_examples=True
+        examples=[{"text": "Hello", "files": []},{"text": "What do you see in this image?", "files": []}],
+        cache_examples=True,
+        multimodal=True
     )
     
 sciChat.launch(share=True)
