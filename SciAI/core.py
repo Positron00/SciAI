@@ -53,7 +53,10 @@ def vote(data: gr.LikeData):
         print("You downvoted this response: " + data.value["value"])
 
 with gr.Blocks() as sciChat:
-    chatbot = gr.Chatbot(height=300,placeholder="<strong>Your Personal Science AI Assistant</strong><br>Ask Me Anything")
+    chatbot = gr.Chatbot(
+        height=300,
+        type="messages",
+        placeholder="<strong>Your Personal Science AI Assistant</strong><br>Ask Me Anything")
     chatbot.like(vote, None, None)
     gr.ChatInterface(
         fn=taskRouter,
