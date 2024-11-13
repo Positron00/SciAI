@@ -3,6 +3,8 @@ import os
 from openai import OpenAI
 from dotenv import load_dotenv
 
+# need to allow an option to select with llm to interact with
+
 #Get the OpenAI API key from the .env file
 load_dotenv('.env', override=True)
 openai_api_key = os.getenv('OPENAI_API_KEY')
