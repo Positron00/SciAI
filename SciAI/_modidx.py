@@ -7,4 +7,5 @@ d = { 'settings': { 'branch': 'main',
                 'lib_path': 'SciAI'},
   'syms': { 'SciAI.core': { 'SciAI.core.llama3_8b': ('core.html#llama3_8b', 'SciAI/core.py'),
                             'SciAI.core.taskRouter': ('core.html#taskrouter', 'SciAI/core.py'),
-                            'SciAI.core.vote': ('core.html#vote', 'SciAI/core.py')}}}
+                            'SciAI.core.vote': ('core.html#vote', 'SciAI/core.py')},
+            'SciAI.llm_rag': {}}}
