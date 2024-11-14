@@ -13,10 +13,10 @@ if which_provider == "OpenAI":
     client = OpenAI(api_key=openai_api_key) # set up the OpenAI client
 elif which_provider == "Meta":
     meta_api_key = os.getenv('META_API_KEY') # get the Meta API key from the .env file
-    client = Meta(api_key=meta_api_key) # set up the Meta client
+    #client = Meta(api_key=meta_api_key) # set up the Meta client
 elif which_provider == "Google":
     google_api_key = os.getenv('GOOGLE_API_KEY') # get the Google API key from the .env file
-    client = Google(api_key=google_api_key) # set up the Google client
+    #client = Google(api_key=google_api_key) # set up the Google client
 
 
 
