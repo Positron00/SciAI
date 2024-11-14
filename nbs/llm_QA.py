@@ -4,13 +4,20 @@ from openai import OpenAI
 from dotenv import load_dotenv
 
 # need to allow an option to select with llm to interact with
+which_provider = "OpenAI"
 
-#Get the OpenAI API key from the .env file
 load_dotenv('.env', override=True)
-openai_api_key = os.getenv('OPENAI_API_KEY')
 
-# Set up the OpenAI client
-client = OpenAI(api_key=openai_api_key)
+if which_provider == "OpenAI":
+    openai_api_key = os.getenv('OPENAI_API_KEY') # get the OpenAI API key from the .env file
+    client = OpenAI(api_key=openai_api_key) # set up the OpenAI client
+elif which_provider == "Meta":
+    meta_api_key = os.getenv('META_API_KEY') # get the Meta API key from the .env file
+    client = Meta(api_key=meta_api_key) # set up the Meta client
+elif which_provider == "Google":
+    google_api_key = os.getenv('GOOGLE_API_KEY') # get the Google API key from the .env file
+    client = Google(api_key=google_api_key) # set up the Google client
+
 
 
 def print_llm_response(prompt):
