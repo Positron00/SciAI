@@ -30,3 +30,13 @@ def home():
 @app.post("/predict") 
 def predict(model: Model, file: UploadFile = File(...)):
     pass
+
+if __name__ == "__main__":
+    # Allows the server to be run in this interactive environment
+    nest_asyncio.apply()
+
+    # This is an alias for localhost which means this particular machine
+    host = "127.0.0.1"
+
+    # Spin up the server!    
+    uvicorn.run(app, host=host, port=8000, root_path="/serve")
