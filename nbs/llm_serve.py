@@ -99,6 +99,13 @@ if __name__ == "__main__":
 # code a minimal client to interact with the server
 #########################################################
 
+import os
+import io
+import cv2
+import requests
+import numpy as np
+from IPython.display import Image, display
+
 base_url = 'http://localhost:8000'
 endpoint = '/predict'
 model = 'yolov3-tiny'
