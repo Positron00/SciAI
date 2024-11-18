@@ -157,3 +157,16 @@ def display_image_from_response(response):
 
 # display the image
 display_image_from_response(prediction)
+
+# test more images
+image_files = [
+    'car2.jpg',
+    'clock3.jpg',
+    'apples.jpg'
+]
+
+for image_file in image_files:
+    with open(f"images/{image_file}", "rb") as image_file:
+        prediction = response_from_server(full_url, image_file, verbose=False)
+    
+    display_image_from_response(prediction)
