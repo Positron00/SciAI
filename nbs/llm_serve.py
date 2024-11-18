@@ -1,5 +1,19 @@
 import os
+import cv2
+
+# suppress Tensorflow warnings
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+
+import cvlib as cv
+from cvlib.object_detection import draw_bbox
+
 from dotenv import load_dotenv
+load_dotenv('.env', override=True)
+
+dir_name = "images_uploaded"
+if not os.path.exists(dir_name):
+    os.mkdir(dir_name)
+
 import io
 import uvicorn
 import numpy as np
@@ -7,7 +21,6 @@ import nest_asyncio
 from enum import Enum
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.responses import StreamingResponse
-load_dotenv('.env', override=True)
 
 # Assign an instance of the FastAPI class to the variable "app".
 # You will interact with your api using this instance.
