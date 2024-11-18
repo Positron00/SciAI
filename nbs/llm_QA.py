@@ -17,6 +17,18 @@ elif which_provider == "Meta":
 elif which_provider == "Google":
     google_api_key = os.getenv('GOOGLE_API_KEY') # get the Google API key from the .env file
     #client = Google(api_key=google_api_key) # set up the Google client
+elif which_provider == "Groq":
+    groq_api_key = os.getenv('GROQ_API_TOKEN') # get the Groq API key from the .env file
+    #client = Groq(api_key=groq_api_key) # set up the Groq client
+elif which_provider == "TogetherAI":
+    togetherai_api_key = os.getenv('TOGETHERAI_API_KEY') # get the TogetherAI API key from the .env file
+    #client = TogetherAI(api_key=togetherai_api_key) # set up the TogetherAI client
+elif which_provider == "Replicate":
+    replicate_api_key = os.getenv('REPLICATE_API_TOKEN') # get the Replicate API key from the .env file
+    #client = Replicate(api_key=replicate_api_key) # set up the Replicate client
+elif which_provider == "HuggingFace":
+    huggingface_api_key = os.getenv('HUGGINGFACE_API_TOKEN') # get the HuggingFace API key from the .env file
+    #client = HuggingFace(api_key=huggingface_api_key) # set up the HuggingFace client
 
 
 
