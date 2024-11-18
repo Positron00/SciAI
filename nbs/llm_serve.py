@@ -110,7 +110,7 @@ base_url = 'http://localhost:8000'
 endpoint = '/predict'
 model = 'yolov3-tiny'
 url_with_endpoint_no_params = base_url + endpoint
-full_url = url_with_endpoint_no_params + "?model=" + model
+full_url = url_with_endpoint_no_params + "?model=" + model # add model parameter to the url
 
 def response_from_server(url, image_file, verbose=True):
     """Makes a POST request to the server and returns the response.
@@ -135,3 +135,25 @@ def response_from_server(url, image_file, verbose=True):
 # test passing an image to the server
 with open("images/clock2.jpg", "rb") as image_file:
     prediction = response_from_server(full_url, image_file)
+
+dir_name = "images_predicted"
+if not os.path.exists(dir_name):
+    os.mkdir(dir_name)
+
+def display_image_from_response(response):
+    """Display image within server's response.
+
+    Args:
+        response (requests.models.Response): The response from the server after object detection.
+    """
+    
+    image_stream = io.BytesIO(response.content)
+    image_stream.seek(0)
+    file_bytes = np.asarray(bytearray(image_stream.read()), dtype=np.uint8)
+    image = cv2.imdecode(file_bytes, cv2.IMREAD_COLOR)
+    filename = "image_with_objects.jpeg"
+    cv2.imwrite(f'images_predicted/{filename}', image)
+    display(Image(f'images_predicted/{filename}'))
+
+# display the image
+display_image_from_response(prediction)
