@@ -95,7 +95,9 @@ if __name__ == "__main__":
     uvicorn.run(app, host=host, port=8000, root_path="/serve")
 
 
+#########################################################
 # code a minimal client to interact with the server
+#########################################################
 
 base_url = 'http://localhost:8000'
 endpoint = '/predict'
