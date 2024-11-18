@@ -84,6 +84,12 @@ if __name__ == "__main__":
 
 # code a minimal client to interact with the server
 
+base_url = 'http://localhost:8000'
+endpoint = '/predict'
+model = 'yolov3-tiny'
+url_with_endpoint_no_params = base_url + endpoint
+full_url = url_with_endpoint_no_params + "?model=" + model
+
 def response_from_server(url, image_file, verbose=True):
     """Makes a POST request to the server and returns the response.
 
@@ -103,3 +109,7 @@ def response_from_server(url, image_file, verbose=True):
         msg = "Everything went well!" if status_code == 200 else "There was an error when handling the request."
         print(msg)
     return response
+
+# test passing an image to the server
+with open("images/clock2.jpg", "rb") as image_file:
+    prediction = response_from_server(full_url, image_file)
