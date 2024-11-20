@@ -32,35 +32,39 @@ elif which_provider == "HuggingFace":
 
 model="gpt-3.5-turbo-0125"
 
-def print_llm_response(prompt,model):
-    """This function takes as input a prompt, which must be a string enclosed in quotation marks,
-    and passes it to OpenAI's GPT3.5 model. The function then prints the response of the model.
-    """
-    llm_response = get_llm_response(prompt,model)
-    print(llm_response)
+# create a llm class
+class LLM:
+    def __init__(self, model):
+        self.model = model
 
+    def print_llm_response(self, prompt):
+        """This function takes as input a prompt, which must be a string enclosed in quotation marks,
+        and passes it to OpenAI's GPT3.5 model. The function then prints the response of the model.
+        """
+        llm_response = self.get_llm_response(prompt)
+        print(llm_response)
 
-def get_llm_response(prompt,model):
-    """This function takes as input a prompt, which must be a string enclosed in quotation marks,
-    and passes it to OpenAI's GPT3.5 model. The function then saves the response of the model as
-    a string.
-    """
-    try:
-        if not isinstance(prompt, str):
-            raise ValueError("Input must be a string enclosed in quotes.")
-        completion = client.chat.completions.create(
-            model,
-            messages=[
-                {
+    def get_llm_response(self, prompt):
+        """This function takes as input a prompt, which must be a string enclosed in quotation marks,
+        and passes it to OpenAI's GPT3.5 model. The function then saves the response of the model as
+        a string.
+        """
+        try:
+            if not isinstance(prompt, str):
+                raise ValueError("Input must be a string enclosed in quotes.")
+            completion = client.chat.completions.create(
+                self.model,
+                messages=[
+                    {
                     "role": "system",
-                    "content": "You are a helpful but terse AI assistant who gets straight to the point.",
-                },
-                {"role": "user", "content": prompt},
-            ],
-            temperature=0.0,
-        )
-        response = completion.choices[0].message.content
-        return response
-    except TypeError as e:
-        print("Error:", str(e))
+                        "content": "You are a helpful but terse AI assistant who gets straight to the point.",
+                    },
+                    {"role": "user", "content": prompt},
+                ],
+                temperature=0.0,
+            )
+            response = completion.choices[0].message.content
+            return response
+        except TypeError as e:
+            print("Error:", str(e))
 
