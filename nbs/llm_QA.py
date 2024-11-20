@@ -30,17 +30,17 @@ elif which_provider == "HuggingFace":
     huggingface_api_key = os.getenv('HUGGINGFACE_API_TOKEN') # get the HuggingFace API key from the .env file
     #client = HuggingFace(api_key=huggingface_api_key) # set up the HuggingFace client
 
+model="gpt-3.5-turbo-0125"
 
-
-def print_llm_response(prompt):
+def print_llm_response(prompt,model):
     """This function takes as input a prompt, which must be a string enclosed in quotation marks,
     and passes it to OpenAI's GPT3.5 model. The function then prints the response of the model.
     """
-    llm_response = get_llm_response(prompt)
+    llm_response = get_llm_response(prompt,model)
     print(llm_response)
 
 
-def get_llm_response(prompt):
+def get_llm_response(prompt,model):
     """This function takes as input a prompt, which must be a string enclosed in quotation marks,
     and passes it to OpenAI's GPT3.5 model. The function then saves the response of the model as
     a string.
@@ -49,7 +49,7 @@ def get_llm_response(prompt):
         if not isinstance(prompt, str):
             raise ValueError("Input must be a string enclosed in quotes.")
         completion = client.chat.completions.create(
-            model="gpt-3.5-turbo-0125",
+            model,
             messages=[
                 {
                     "role": "system",
