@@ -93,3 +93,35 @@ def llama32(messages, model_size=11):
     raise Exception(res['error'])
 
   return res['choices'][0]['message']['content']
+
+
+# handling image inputs
+from PIL import Image
+import matplotlib.pyplot as plt
+import base64
+
+def encode_image(image_path):
+  with open(image_path, "rb") as img:
+    return base64.b64encode(img.read()).decode('utf-8')
+  
+if __name__ == "__main__":
+    messages = [
+        {
+            "role": "user",
+            "content": [
+                {
+                    "type": "text",
+                    "text": "describe the image!"
+                },
+                {
+                    "type": "image_url",
+                    "image_url": {
+                    "url": f"data:image/jpeg;base64,{encode_image('images/test.jpg')}"
+                    }
+                }
+            ]
+        }
+    ]
+
+    result = llama32(messages)
+    print(result)
