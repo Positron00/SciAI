@@ -1,6 +1,10 @@
 # %pip install llama-stack-client==0.0.35 > /dev/null 2>&1
 # %pip install termcolor
 
+import os
+import requests
+import json
+
 LLAMA_STACK_API_TOGETHER_URL="https://llama-stack.together.ai"
 LLAMA31_8B_INSTRUCT = "Llama3.1-8B-Instruct"
 
@@ -99,3 +103,29 @@ async def run_main():
                 log.print()
 
 #await run_main()
+
+
+# Llama Guard for safety
+def llamaguard3(prompt, debug=False):
+  model = "meta-llama/Meta-Llama-Guard-3-8B"
+  url = "https://api.together.xyz/v1/completions"
+  payload = {
+    "model": model,
+    "temperature": 0,
+    "prompt": prompt,
+    "max_tokens": 4096,
+  }
+
+  headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+    "Authorization": "Bearer " + os.environ["TOGETHER_API_KEY"]
+  }
+  res = json.loads(requests.request("POST", url, headers=headers, data=json.dumps(payload)).content)
+
+  if 'error' in res:
+    raise Exception(res['error'])
+
+  if debug:
+    print(res)
+  return res['choices'][0]['text']
