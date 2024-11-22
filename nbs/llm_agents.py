@@ -129,3 +129,74 @@ def llamaguard3(prompt, debug=False):
   if debug:
     print(res)
   return res['choices'][0]['text']
+
+
+# run vision model
+import base64
+
+from llama_stack_client import LlamaStackClient
+from llama_stack_client.types import agent_create_params
+
+LLAMA32_11B_INSTRUCT = "Llama3.2-11B-Vision-Instruct"
+
+class Agent:
+    def __init__(self):
+        self.client = LlamaStackClient(
+            base_url=LLAMA_STACK_API_TOGETHER_URL,
+        )
+
+    def create_agent(self, agent_config: AgentConfig):
+        agent = self.client.agents.create(
+            agent_config=agent_config,
+        )
+        self.agent_id = agent.agent_id
+        session = self.client.agents.sessions.create(
+            agent_id=agent.agent_id,
+            session_name="example_session",
+        )
+        self.session_id = session.session_id
+
+    async def execute_turn(self, prompt: str, image_path: str):
+        base64_image = encode_image(image_path)
+
+        messages = [{
+            "role": "user",
+            "content": [
+              {
+                "image": {
+                  "uri": f"data:image/jpeg;base64,{base64_image}"
+                }
+              },
+              prompt,
+            ]
+        }]
+
+        response = self.client.agents.turns.create(
+            agent_id=self.agent_id,
+            session_id=self.session_id,
+            messages = messages,
+            stream=True,
+        )
+
+        for chunk in response:
+            if chunk.event.payload.event_type != "turn_complete":
+                yield chunk
+
+async def run_main(image_path, prompt):
+    agent_config = AgentConfig(
+        model=LLAMA32_11B_INSTRUCT,
+        instructions="You are a helpful assistant",
+        enable_session_persistence=False,
+    )
+
+    agent = Agent()
+    agent.create_agent(agent_config)
+
+    print(f"User> {prompt}")
+    response = agent.execute_turn(prompt=prompt, image_path=image_path)
+    async for log in EventLogger().log(response):
+        if log is not None:
+            log.print()
+
+#await run_main("images/cat.jpeg",
+#         "What cat breed is this? Tell me in detail about the breed.")
