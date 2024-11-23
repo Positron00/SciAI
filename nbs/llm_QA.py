@@ -236,4 +236,13 @@ tavily_client = TavilyClient(api_key=TAVILY_API_KEY)
 
 result = tavily_client.search(parsed_result['arguments']['query'])
 search_result = result["results"][0]["content"]
-search_result
+#search_result
+
+# reprompt Llama with the search result
+messages.append({
+                    "role": "tool",
+                    "content": search_result,
+                })
+
+response = llama32(messages)
+print(response)
