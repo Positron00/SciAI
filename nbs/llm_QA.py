@@ -222,5 +222,18 @@ def parse_llm_result(llm_result: str):
 
 
 parsed_result = parse_llm_result(llm_result)
+#print(parsed_result)
 
-print(parsed_result)
+# calling the search API
+import sys
+#!{sys.executable} -m pip install tavily-python
+
+from tavily import TavilyClient
+
+os.environ["TAVILY_API_KEY "]= ""
+TAVILY_API_KEY = os.environ["TAVILY_API_KEY "]
+tavily_client = TavilyClient(api_key=TAVILY_API_KEY)
+
+result = tavily_client.search(parsed_result['arguments']['query'])
+search_result = result["results"][0]["content"]
+search_result
