@@ -195,3 +195,32 @@ Cutting Knowledge Date: December 2023
   ]
 llm_result = llama32(messages, 90)
 
+import re
+
+def parse_llm_result(llm_result: str):
+    # Define the regular expression pattern to extract function name and arguments
+    pattern = r"\<\|python\_tag\|\>(\w+\.\w+)\((.+)\)"
+
+    match = re.search(pattern, llm_result)
+    if match:
+        function_call = match.group(1)  # e.g., brave_search.call
+        arguments = match.group(2)      # e.g., query="current weather in New York City"
+       
+        # Further parsing the arguments to extract key-value pairs
+        arg_pattern = r'(\w+)="([^"]+)"'
+        arg_matches = re.findall(arg_pattern, arguments)
+
+        # Convert the arguments into a dictionary
+        parsed_args = {key: value for key, value in arg_matches}
+
+        return {
+            "function_call": function_call,
+            "arguments": parsed_args
+        }
+    else:
+        return None
+
+
+parsed_result = parse_llm_result(llm_result)
+
+print(parsed_result)
