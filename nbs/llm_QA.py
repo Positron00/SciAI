@@ -100,6 +100,28 @@ from PIL import Image
 import matplotlib.pyplot as plt
 import base64
 
+def resize_image(img, max_dimension=1120):
+  original_width, original_height = img.size
+
+  if original_width > original_height:
+      scaling_factor = max_dimension / original_width     
+  else:
+      scaling_factor = max_dimension / original_height
+      
+  new_width = int(original_width * scaling_factor)
+  new_height = int(original_height * scaling_factor)
+
+  # Resize the image while maintaining aspect ratio
+  resized_img = img.resize((new_width, new_height))
+
+  resized_img.save("images/resized_image.jpg")
+
+  print("Original size:", original_width, "x", original_height)
+  print("New size:", new_width, "x", new_height)
+
+  return resized_img
+    
+
 def encode_image(image_path):
   with open(image_path, "rb") as img:
     return base64.b64encode(img.read()).decode('utf-8')
@@ -125,3 +147,11 @@ if __name__ == "__main__":
 
     result = llama32(messages)
     print(result)
+
+
+# an example of tool calling
+display_local_image("images/thumbnail_IMG_6385.jpg")
+img = Image.open("images/thumbnail_IMG_6385.jpg")
+max_dimension = 1120
+resized_img = resize_image(img)
+base64_image = encode_image("images/resized_image.jpg")
