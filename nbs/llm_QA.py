@@ -155,3 +155,43 @@ img = Image.open("images/thumbnail_IMG_6385.jpg")
 max_dimension = 1120
 resized_img = resize_image(img)
 base64_image = encode_image("images/resized_image.jpg")
+
+messages = [
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "text",
+        "text": "Recommend the best place in USA I can have similar experience, put event name, its city and month in JSON format output only"
+      },
+      {
+        "type": "image_url",
+        "image_url": {
+          "url": f"data:image/jpeg;base64,{base64_image}"
+        }
+      }
+    ]
+  },
+]
+result = llama32(messages)
+
+messages = [
+    {
+      "role": "system",
+      "content":  f"""
+Environment: ipython
+Tools: brave_search, wolfram_alpha
+Cutting Knowledge Date: December 2023
+"""
+      },
+    {
+      "role": "assistant",
+      "content": result
+    },
+    {
+      "role": "user",
+      "content": "Search to validate if the event {name} takes place in the {city} value in {month} value, replace {name}, {city} and {month} with values from {result}"
+    }
+  ]
+llm_result = llama32(messages, 90)
+
