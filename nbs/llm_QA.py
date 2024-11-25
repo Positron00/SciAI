@@ -1,98 +1,109 @@
 import os
 import requests
 import json
+from together import Together
 
 from openai import OpenAI
 from dotenv import load_dotenv
 
-# need to allow an option to select with llm to interact with
-which_provider = "OpenAI"
+# allow an option to select with llm to interact with
+# preregister and get free API keys from the providers
+# store the API keys in a .env file
+provider = "TogetherAI"
 
 load_dotenv('.env', override=True)
 
-if which_provider == "OpenAI":
-    openai_api_key = os.getenv('OPENAI_API_KEY') # get the OpenAI API key from the .env file
-    client = OpenAI(api_key=openai_api_key) # set up the OpenAI client
-elif which_provider == "Meta":
+if provider == "OpenAI":
+    pass
+elif provider == "Meta":
     meta_api_key = os.getenv('META_API_KEY') # get the Meta API key from the .env file
     #client = Meta(api_key=meta_api_key) # set up the Meta client
-elif which_provider == "Google":
+elif provider == "Google":
     google_api_key = os.getenv('GOOGLE_API_KEY') # get the Google API key from the .env file
     #client = Google(api_key=google_api_key) # set up the Google client
-elif which_provider == "Groq":
+elif provider == "Groq":
     groq_api_key = os.getenv('GROQ_API_TOKEN') # get the Groq API key from the .env file
     #client = Groq(api_key=groq_api_key) # set up the Groq client
-elif which_provider == "TogetherAI":
+elif provider == "TogetherAI":
     togetherai_api_key = os.getenv('TOGETHERAI_API_KEY') # get the TogetherAI API key from the .env file
     #client = TogetherAI(api_key=togetherai_api_key) # set up the TogetherAI client
-elif which_provider == "Replicate":
+elif provider == "Replicate":
     replicate_api_key = os.getenv('REPLICATE_API_TOKEN') # get the Replicate API key from the .env file
     #client = Replicate(api_key=replicate_api_key) # set up the Replicate client
-elif which_provider == "HuggingFace":
+elif provider == "HuggingFace":
     huggingface_api_key = os.getenv('HUGGINGFACE_API_TOKEN') # get the HuggingFace API key from the .env file
     #client = HuggingFace(api_key=huggingface_api_key) # set up the HuggingFace client
 
-model="gpt-3.5-turbo-0125"
-
 # create a llm class
 class LLM:
-    def __init__(self, model):
+    def __init__(self, model, provider):
         self.model = model
+        self.provider = provider
 
     def print_llm_response(self, prompt):
         """This function takes as input a prompt, which must be a string enclosed in quotation marks,
-        and passes it to OpenAI's GPT3.5 model. The function then prints the response of the model.
+        and passes it to the llm. The function then prints the response of the model.
         """
         llm_response = self.get_llm_response(prompt)
         print(llm_response)
 
     def get_llm_response(self, prompt):
         """This function takes as input a prompt, which must be a string enclosed in quotation marks,
-        and passes it to OpenAI's GPT3.5 model. The function then saves the response of the model as
-        a string.
+        and passes it to the llm. The function then returns the response of the model as a string.
         """
         try:
             if not isinstance(prompt, str):
                 raise ValueError("Input must be a string enclosed in quotes.")
-            completion = client.chat.completions.create(
-                self.model,
-                messages=[
-                    {
-                    "role": "system",
-                        "content": "You are a helpful but terse AI assistant who gets straight to the point.",
-                    },
-                    {"role": "user", "content": prompt},
-                ],
-                temperature=0.0,
-            )
-            response = completion.choices[0].message.content
-            return response
+            
+            if self.provider == "OpenAI":
+                return self.openai_gpt35(prompt)
+            elif self.provider == "TogetherAI":
+                return self.llama32(prompt)
+                            
         except TypeError as e:
             print("Error:", str(e))
 
-# an example function for using Llama3.2, to be integrated into the LLM class
-def llama32(messages, model_size=11):
-  model = f"meta-llama/Llama-3.2-{model_size}B-Vision-Instruct-Turbo"
-  url = "https://api.together.xyz/v1/chat/completions"
-  payload = {
-    "model": model,
-    "max_tokens": 4096,
-    "temperature": 0.0,
-    "stop": ["<|eot_id|>","<|eom_id|>"],
-    "messages": messages
-  }
+    # use OpenAI's GPT3.5 model
+    def openai_gpt35(self, prompt):
+        self.model = "gpt-3.5-turbo-0125"
+        openai_api_key = os.getenv('OPENAI_API_KEY') # get the OpenAI API key from the .env file
+        client = OpenAI(api_key=openai_api_key) # set up the OpenAI client
+        completion = client.chat.completions.create(
+                    self.model,
+                    messages=[
+                        {"role": "system",
+                         "content": "You are a helpful but terse AI assistant who gets straight to the point.",
+                        },
+                        {"role": "user", 
+                         "content": prompt},
+                    ],
+                    temperature=0.0,
+                )
+        return completion.choices[0].message.content
+        
+    # use TogetherAI's Llama3.2 model
+    def llama32(self, messages, model_size=11):
+        self.model = f"meta-llama/Llama-3.2-{model_size}B-Vision-Instruct-Turbo"
+        url = "https://api.together.xyz/v1/chat/completions"
+        payload = {
+            "model": self.model,
+            "max_tokens": 4096,
+            "temperature": 0.0,
+            "stop": ["<|eot_id|>","<|eom_id|>"],
+            "messages": messages
+        }
 
-  headers = {
-    "Accept": "application/json",
-    "Content-Type": "application/json",
-    "Authorization": "Bearer " + os.environ["TOGETHER_API_KEY"]
-  }
-  res = json.loads(requests.request("POST", url, headers=headers, data=json.dumps(payload)).content)
+        headers = {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + togetherai_api_key
+        }
+        result = json.loads(requests.request("POST", url, headers=headers, data=json.dumps(payload)).content)
 
-  if 'error' in res:
-    raise Exception(res['error'])
+        if 'error' in result:
+            raise Exception(result['error'])
 
-  return res['choices'][0]['message']['content']
+        return result['choices'][0]['message']['content']
 
 
 # handling image inputs
