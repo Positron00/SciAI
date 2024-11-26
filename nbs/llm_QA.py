@@ -36,8 +36,8 @@ elif provider == "HuggingFace":
 
 # create a llm class
 class LLM:
-    def __init__(self, model, provider):
-        self.model = model
+    def __init__(self, model_family, provider):
+        self.model_family = model_family
         self.provider = provider
 
     def print_llm_response(self, prompt):
@@ -83,7 +83,7 @@ class LLM:
         
     # use TogetherAI's Llama3.2 model
     def llama32(self, messages, model_size=11):
-        self.model = f"meta-llama/Llama-3.2-{model_size}B-Vision-Instruct-Turbo"
+        self.model = f"{self.model_family}/Llama-3.2-{model_size}B-Vision-Instruct-Turbo"
         url = "https://api.together.xyz/v1/chat/completions"
         payload = {
             "model": self.model,
