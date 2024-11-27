@@ -105,7 +105,7 @@ class LLM:
 
         return result['choices'][0]['message']['content']
 
-
+"""
 # handling image inputs
 from PIL import Image
 import matplotlib.pyplot as plt
@@ -190,9 +190,10 @@ messages = [
     {
       "role": "system",
       "content":  f"""
-Environment: ipython
-Tools: brave_search, wolfram_alpha
-Cutting Knowledge Date: December 2023
+"""Environment: ipython
+        Tools: brave_search, wolfram_alpha
+        Cutting Knowledge Date: December 2023
+        """
 """
       },
     {
@@ -257,3 +258,5 @@ messages.append({
 
 response = llama32(messages)
 print(response)
+
+"""
