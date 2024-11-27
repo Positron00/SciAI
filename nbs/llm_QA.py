@@ -36,7 +36,7 @@ elif provider == "HuggingFace":
 
 # create a llm class
 class LLM:
-    def __init__(self, model_family, provider):
+    def __init__(self, model_family="meta-llama", provider="TogetherAI"):
         self.model_family = model_family
         self.provider = provider
 
