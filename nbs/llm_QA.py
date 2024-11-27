@@ -193,7 +193,7 @@ messages = [
 """Environment: ipython
         Tools: brave_search, wolfram_alpha
         Cutting Knowledge Date: December 2023
-        """
+"""
 """
       },
     {
