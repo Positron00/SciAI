@@ -17,7 +17,8 @@ __all__ = ['loader', 'documents', 'text_splitter', 'all_splits', 'vectorstore', 
 
 # %% ../nbs/01_RAG.ipynb 5
 # import libraries
-
+import langchain
+import langchain_community
 from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
 from langchain.text_splitter import RecursiveCharacterTextSplitter
@@ -50,6 +51,7 @@ llm = ChatGroq(temperature=0, model_name="llama3-8b-8192")
 
 # %% ../nbs/01_RAG.ipynb 9
 # initialize retrieval chain
+import utilsLlama
 from langchain.chains import ConversationalRetrievalChain
 
 chain = ConversationalRetrievalChain.from_llm(llm,vectorstore.as_retriever(),return_source_documents=True)
