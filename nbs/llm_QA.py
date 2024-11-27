@@ -52,8 +52,8 @@ class LLM:
         and passes it to the llm. The function then returns the response of the model as a string.
         """
         try:
-            if not isinstance(prompt, str):
-                raise ValueError("Input must be a string enclosed in quotes.")
+            #if not isinstance(prompt, str):
+            #    raise ValueError("Input must be a string enclosed in quotes.")
             
             if self.provider == "OpenAI":
                 return self.openai_gpt35(prompt)
