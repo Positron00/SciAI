@@ -1,3 +1,4 @@
+from ast import Pass
 import openai
 import re
 import httpx
@@ -9,6 +10,7 @@ from openai import OpenAI
 
 client = OpenAI()
 
+# define the agent class
 class Agent:
     def __init__(self, system=""):
         self.system = system
@@ -29,3 +31,60 @@ class Agent:
                         messages=self.messages)
         return completion.choices[0].message.content
     
+
+# example prompt for the REACT agent
+prompt = """
+You run in a loop of Thought, Action, PAUSE, Observation.
+At the end of the loop you output an Answer
+Use Thought to describe your thoughts about the question you have been asked.
+Use Action to run one of the actions available to you - then return PAUSE.
+Observation will be the result of running those actions.
+
+Your available actions are:
+
+ACTION_1:
+e.g. ACTION_1:
+INSERT ACTION_1 HERE    
+
+ACTION_2:
+e.g. ACTION_2:
+INSERT ACTION_2 HERE
+
+Example session:
+
+Question: INSERT QUESTION HERE
+Thought: INSERT THOUGHT HERE
+Action: ACTION_1: INSERT ACTION_1 HERE
+PAUSE
+
+You will be called again with this:
+
+Observation: INSERT OBSERVATION HERE
+
+You then output:
+
+Answer: INSERT ANSWER HERE
+""".strip()
+
+
+def ACTION_1(INPUT1):
+    pass
+
+def ACTION_2(INPUT2):
+    pass
+
+known_actions = {
+    "ACTION_1": ACTION_1,
+    "ACTION_2": ACTION_2
+}
+
+abot = Agent(prompt)
+result = abot("INSERT QUESTION HERE")
+print(result)
+
+result = ACTION_2("INPUT2")
+print(result)
+
+next_prompt = "Observation: {}".format(result)
+abot(next_prompt)
+abot.messages
