@@ -78,10 +78,38 @@ known_actions = {
     "ACTION_2": ACTION_2
 }
 
-abot = Agent(prompt)
-result = abot("INSERT QUESTION HERE")
-print(result)
+#abot = Agent(prompt)
+#result = abot("INSERT QUESTION HERE")
+#next_prompt = "Observation: {}".format(ACTION_2("INPUT2"))
+#abot(next_prompt)
+#abot.messages
 
-next_prompt = "Observation: {}".format(ACTION_2("INPUT2"))
-abot(next_prompt)
-abot.messages
+action_re = re.compile('^Action: (\w+): (.*)$')   # python regular expression to selection action
+
+def query(question, max_turns=5):
+    i = 0
+    bot = Agent(prompt)
+    next_prompt = question
+    while i < max_turns:
+        i += 1
+        result = bot(next_prompt)
+        print(result)
+        actions = [
+            action_re.match(a) 
+            for a in result.split('\n') 
+            if action_re.match(a)
+        ]
+        if actions:
+            # There is an action to run
+            action, action_input = actions[0].groups()
+            if action not in known_actions:
+                raise Exception("Unknown action: {}: {}".format(action, action_input))
+            print(" -- running {} {}".format(action, action_input))
+            observation = known_actions[action](action_input)
+            print("Observation:", observation)
+            next_prompt = "Observation: {}".format(observation)
+        else:
+            return
+        
+question = """INSERT QUESTION HERE"""
+query(question)
