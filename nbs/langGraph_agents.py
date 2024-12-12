@@ -82,9 +82,6 @@ abot = Agent(prompt)
 result = abot("INSERT QUESTION HERE")
 print(result)
 
-result = ACTION_2("INPUT2")
-print(result)
-
-next_prompt = "Observation: {}".format(result)
+next_prompt = "Observation: {}".format(ACTION_2("INPUT2"))
 abot(next_prompt)
 abot.messages
