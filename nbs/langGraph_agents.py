@@ -196,4 +196,4 @@ messages = [HumanMessage(content=query)]
 model = ChatOpenAI(model="gpt-4o")  # requires more advanced model
 abot = Agent(model, [tool], system=prompt)
 result = abot.graph.invoke({"messages": messages})
-
+print(result['messages'][-1].content)
