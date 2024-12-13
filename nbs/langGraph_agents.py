@@ -187,3 +187,13 @@ Image(abot.graph.get_graph().draw_png())
 messages = [HumanMessage(content="What is the weather in sf?")]
 result = abot.graph.invoke({"messages": messages})
 result['messages'][-1].content
+
+#another example
+query = "Who won the super bowl in 2024? In what state is the winning team headquarters located? \
+What is the GDP of that state? Answer each question." 
+messages = [HumanMessage(content=query)]
+
+model = ChatOpenAI(model="gpt-4o")  # requires more advanced model
+abot = Agent(model, [tool], system=prompt)
+result = abot.graph.invoke({"messages": messages})
+
