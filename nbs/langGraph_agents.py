@@ -183,3 +183,7 @@ abot = Agent(model, [tool], system=prompt)
 from IPython.display import Image
 
 Image(abot.graph.get_graph().draw_png())
+
+messages = [HumanMessage(content="What is the weather in sf?")]
+result = abot.graph.invoke({"messages": messages})
+result['messages'][-1].content
