@@ -7,6 +7,12 @@ from dotenv import load_dotenv
 
 _ = load_dotenv()
 from openai import OpenAI
+from langgraph.graph import StateGraph, END
+from typing import TypedDict, Annotated
+import operator
+from langchain_core.messages import AnyMessage, SystemMessage, HumanMessage, ToolMessage
+from langchain_openai import ChatOpenAI
+from langchain_community.tools.tavily_search import TavilySearchResults
 
 client = OpenAI()
 
@@ -113,3 +119,11 @@ def query(question, max_turns=5):
         
 question = """INSERT QUESTION HERE"""
 query(question)
+
+
+tool = TavilySearchResults(max_results=4) #increased number of results
+#print(type(tool))
+#print(tool.name)
+
+class AgentState(TypedDict):
+    messages: Annotated[list[AnyMessage], operator.add]
