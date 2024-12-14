@@ -195,3 +195,21 @@ for event in abot.graph.stream({"messages": messages}, thread):
     for v in event.values():
         print(v['messages'])
 
+
+# stream tokens
+from langgraph.checkpoint.aiosqlite import AsyncSqliteSaver
+
+memory = AsyncSqliteSaver.from_conn_string(":memory:")
+abot = Agent(model, [tool], system=prompt, checkpointer=memory)
+
+messages = [HumanMessage(content="What is the weather in SF?")]
+thread = {"configurable": {"thread_id": "4"}}
+async for event in abot.graph.astream_events({"messages": messages}, thread, version="v1"):
+    kind = event["event"]
+    if kind == "on_chat_model_stream":
+        content = event["data"]["chunk"].content
+        if content:
+            # Empty content in the context of OpenAI means
+            # that the model is asking for a tool to be invoked.
+            # So we only print non-empty content
+            print(content, end="")
