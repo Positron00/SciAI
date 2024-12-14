@@ -244,3 +244,4 @@ async for event in abot.graph.astream_events({"messages": messages}, thread, ver
             # that the model is asking for a tool to be invoked.
             # So we only print non-empty content
             print(content, end="")
+
